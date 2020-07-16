@@ -64,8 +64,8 @@ class ServerUtil {
                         Log.d("서버 응답 내용", json.toString())
 
 //                        handler 변수에 응답 처리 코드가 있으면 실행해주자
-                        handler?.onResponse(json)
-                    }
+                    handler?.onResponse(json)
+                }
 
                 })
 
