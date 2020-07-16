@@ -35,8 +35,12 @@ class MainActivity : BaseActivity() {
                     }
                     else {
 //                        로그인 실패 => 토스트로 실패했다고 출력
+//                        어떤 이유로 실패했는지 서버가 주는 메시지를 출력
+
+//                        서버가 알려주는 메시지를 파싱
+                        val massage = json.getString("message")
                         runOnUiThread {
-                            Toast.makeText(mContext, "로그인 실패", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(mContext, "로그인 실패. (사유: "+massage+")", Toast.LENGTH_SHORT).show()
                         }
 
 
