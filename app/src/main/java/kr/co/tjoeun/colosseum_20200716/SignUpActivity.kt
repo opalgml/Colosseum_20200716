@@ -9,6 +9,7 @@ import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_login.emailEdt
 import kotlinx.android.synthetic.main.activity_sign_up.*
+import kr.co.tjoeun.colosseum_20200716.utils.ContextUtil
 import kr.co.tjoeun.colosseum_20200716.utils.ServerUtil
 import org.json.JSONObject
 
@@ -71,6 +72,7 @@ class SignUpActivity : BaseActivity() {
                             val data = json.getJSONObject("data")
                             val token = data.getString("token")
 //                            토큰 저장
+                            ContextUtil.setLoginUserToken(mContext, token)
 
                         }
                     }
