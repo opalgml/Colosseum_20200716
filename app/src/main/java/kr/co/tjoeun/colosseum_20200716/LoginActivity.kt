@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_login.*
+import kr.co.tjoeun.colosseum_20200716.utils.ContextUtil
 import kr.co.tjoeun.colosseum_20200716.utils.ServerUtil
 import org.json.JSONObject
 
@@ -44,6 +45,12 @@ class LoginActivity : BaseActivity() {
 
                     if (codeNum == 200) {
 //                        로그인 성공
+//                            로그인 => 서버가 알려주는 토큰을 반영구 저장 (SharedPreference 사용)
+//                            json => data => token 스트링 추출
+                        val data = json.getJSONObject("data")
+                        val token = data.getString("token")
+//                            토큰 저장
+                        ContextUtil.setLoginUserToken(mContext, token)
                     }
                     else {
 //                        로그인 실패 => 토스트로 실패했다고 출력

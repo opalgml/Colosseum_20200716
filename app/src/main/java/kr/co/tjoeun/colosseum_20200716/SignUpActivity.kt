@@ -65,15 +65,8 @@ class SignUpActivity : BaseActivity() {
                     {
 //                        회원가입 성공
                         runOnUiThread {
-//                            Toast.makeText(mContext, "회원가입 성공!", Toast.LENGTH_SHORT).show()
-//                            finish()
-//                            로그인 => 서버가 알려주는 토큰을 반영구 저장 (SharedPreference 사용)
-//                            json => data => token 스트링 추출
-                            val data = json.getJSONObject("data")
-                            val token = data.getString("token")
-//                            토큰 저장
-                            ContextUtil.setLoginUserToken(mContext, token)
-
+                            Toast.makeText(mContext, "회원가입 성공!", Toast.LENGTH_SHORT).show()
+                            finish()
                         }
                     }
                     else
