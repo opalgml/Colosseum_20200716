@@ -20,7 +20,8 @@ class LoginActivity : BaseActivity() {
     override fun setupEvents() {
 
         signUpBtn.setOnClickListener {
-            Toast.makeText(mContext, "이벤트여부", Toast.LENGTH_SHORT)
+
+            //Toast.makeText(mContext, "이벤트여부", Toast.LENGTH_SHORT)
 
             val myIntent = Intent(mContext, SignUpActivity::class.java)
             startActivity(myIntent)
