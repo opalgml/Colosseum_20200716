@@ -9,6 +9,8 @@ import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_login.emailEdt
 import kotlinx.android.synthetic.main.activity_sign_up.*
+import kr.co.tjoeun.colosseum_20200716.utils.ServerUtil
+import org.json.JSONObject
 
 class SignUpActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,8 +50,15 @@ class SignUpActivity : BaseActivity() {
             }
 
 //            모든 검사를 통과하면, 서버에 가입 요청
+            ServerUtil.putRequestSignUp(mContext, inputEmail, inputPassword, inputNickname, object : ServerUtil.JsonResponseHandler{
+                override fun onResponse(json: JSONObject) {
+
+                }
+
+            })
 
         }
+
 
 //        비밀번호 입력 내용 변경 이벤트 처리
         passwordEdt.addTextChangedListener(object : TextWatcher {

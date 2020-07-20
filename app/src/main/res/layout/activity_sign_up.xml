@@ -53,5 +53,11 @@
         android:hint="사용할 닉네임 입력"
         android:singleLine="true" />
 
+    <Button
+        android:id="@+id/signupBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="회원가입" />
+
 
 </LinearLayout>
