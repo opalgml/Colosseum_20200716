@@ -15,6 +15,7 @@
         android:text="이메일" />
 
     <EditText
+        android:id="@+id/emailEdt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="이메일양식으로입력"
@@ -38,6 +39,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="비밀번호를 입력해 주세요." />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="닉네임"
+        android:layout_marginTop="20dp" />
+
+    <EditText
+        android:id="@+id/nickNameEdt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="사용할 닉네임 입력"
+        android:singleLine="true" />
 
 
 </LinearLayout>
