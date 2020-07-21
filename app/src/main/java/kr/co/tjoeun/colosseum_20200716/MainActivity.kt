@@ -3,6 +3,7 @@ package kr.co.tjoeun.colosseum_20200716
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import kotlinx.android.synthetic.main.activity_main.*
 import kr.co.tjoeun.colosseum_20200716.adapters.TopicAdatper
 import kr.co.tjoeun.colosseum_20200716.datas.Topic
@@ -33,7 +34,7 @@ class MainActivity : BaseActivity() {
 
 //            상세화면으로 진입 => 클릭된 주제의 id값만 화면에 전달
             val myIntent = Intent(mContext, ViewTopicDetailActivity::class.java)
-            intent.putExtra("topicId", clickedTopic.id)
+            myIntent.putExtra("topicId", clickedTopic.id)
             startActivity(myIntent)
 
         }
