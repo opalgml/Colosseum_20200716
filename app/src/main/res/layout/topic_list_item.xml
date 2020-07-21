@@ -13,11 +13,13 @@
         android:padding="15dp" >
 
         <ImageView
+            android:id="@+id/topicImg"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:src="@drawable/iu_pick" />
 
         <TextView
+            android:id="@+id/topicTitleTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20sp"
