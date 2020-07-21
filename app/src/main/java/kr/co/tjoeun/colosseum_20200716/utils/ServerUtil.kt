@@ -120,7 +120,6 @@ class ServerUtil {
 
 //        로그인API를 호출해주는 기능
 //        1. 화면에서 어떤 데이터를 받아와야 하는지? -> email, name
-
         fun postRequestLogin(context: Context, email: String, pw: String, handler: JsonResponseHandler?) {
 
 //            서버 통신 담당 변수 (클라이언트 역할 수행 변수)
@@ -170,6 +169,55 @@ class ServerUtil {
 
         }
 
+//    주제 진영 선택 투표하는 기능
+        fun postRequestVote(context: Context, sideId: Int, handler: JsonResponseHandler?) {
+
+//            서버 통신 담당 변수 (클라이언트 역할 수행 변수)
+        val client = OkHttpClient()
+
+//            어느 주소로 가야하는지 저장
+        val urlString = "${BASE_URL}/topic_vote"
+
+//            서버가 가지고 갈 데이터를 FormBody를 이용해 담음
+//            POST/PUT/PATCH가 같은 방식을 사용
+        val formData = FormBody.Builder()
+            .add("side_id", sideId.toString()) // add시 String 값만 넣을 수 있음
+            .build()
+
+//            요청 정보를 종합하는 변수 Request 사용
+//            Intent 만드는것과 비슷한 개념
+        val request = Request.Builder()
+            .url(urlString)
+            .post(formData)
+            .header("X-http-Token", ContextUtil.getLoginUserToken(context))
+            .build()
+
+//            종합된 request를 이용해서 실제 API 호출 (-> Client가 처리)
+//            받아올 응답도 같이 처리
+        client.newCall(request)
+            .enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+//                        서버 연결 자체에 실패한경우
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+//                        연결은 성공해서, 서버가 응답을 내려줬을때 실행
+//                        실제 서버가 내려준 응답 내용을 변수로 저장
+                    val bodyStr = response.body?.string()
+
+//                        응답 내용으로 Json 객체 생성
+                    val json = JSONObject(bodyStr)
+
+//                        최종적으로 가져온 내용을 로그로 출력
+                    Log.d("서버 응답 내용", json.toString())
+
+//                        handler 변수에 응답 처리 코드가 있으면 실행해주자
+                    handler?.onResponse(json)
+                }
+
+            })
+
+    }
 //     회원가입 호출 기능
         fun putRequestSignUp(context: Context, email: String, password:String, nickName: String, handler: JsonResponseHandler?) {
 

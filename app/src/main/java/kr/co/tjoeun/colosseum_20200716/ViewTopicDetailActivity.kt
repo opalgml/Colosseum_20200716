@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.Toast
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_view_topic_detail.*
+import kr.co.tjoeun.colosseum_20200716.datas.Side
 import kr.co.tjoeun.colosseum_20200716.datas.Topic
 import kr.co.tjoeun.colosseum_20200716.utils.ServerUtil
 import org.json.JSONObject
@@ -43,6 +44,14 @@ class ViewTopicDetailActivity : BaseActivity() {
             val clickedSide = mTopic.sideList[clickedSideTag.toInt()]
 
             Log.d("투표하려는 진영 제목", clickedSide.title)
+
+//            실제로 해당 진영에 투표
+            ServerUtil.postRequestVote(mContext, clickedSide.id , object : ServerUtil.JsonResponseHandler{
+                override fun onResponse(json: JSONObject) {
+
+                }
+            })
+
 
         }
 
