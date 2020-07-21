@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
+import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_main.view.*
 import kr.co.tjoeun.colosseum_20200716.R
 import kr.co.tjoeun.colosseum_20200716.datas.Topic
@@ -30,6 +31,7 @@ class TopicAdatper(val mContext: Context, val resId:Int, val mList:List<Topic>) 
         val data = mList[position]
 
         topicTitleTxt.text = data.title
+        Glide.with(mContext).load(data.imgageUrl).into(topicImg)
 
         return row
 
