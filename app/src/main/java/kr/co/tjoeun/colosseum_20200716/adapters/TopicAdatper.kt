@@ -31,7 +31,7 @@ class TopicAdatper(val mContext: Context, val resId:Int, val mList:List<Topic>) 
         val data = mList[position]
 
         topicTitleTxt.text = data.title
-        Glide.with(mContext).load(data.imgageUrl).into(topicImg)
+        Glide.with(mContext).load(data.imageUrl).into(topicImg)
 
         return row
 
