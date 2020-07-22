@@ -116,54 +116,6 @@ class ServerUtil {
             })
     }
 
-//    토론 댓글 목록을 조회하는 기능
-    fun getRequestTopicReply(context: Context, topicId : Int,  handler: JsonResponseHandler?) {
-    val client = OkHttpClient()
-
-    //        GET, DELETE : query 에 파라미터 첨부
-    //        query => 주소 (url)에 직접 어떤 데이터가 담기는지 기록
-    //        주소를 적을 때 => 파라미터 첨부도 같이 진행
-    val urlBuilder = "${BASE_URL}/topic_reply/${topicId}".toHttpUrlOrNull()!!.newBuilder()
-
-    //        urlBuilder에 필요한 파라미터 첨부
-//    urlBuilder.addEncodedQueryParameter("order_type", "NEW")
-//    urlBuilder.addEncodedQueryParameter("page_num", "1")
-
-    //        모든 데이터가 담겼으면 주소를 완성해서 String 으로 저장
-    val urlString = urlBuilder.build().toString()
-
-    //        실제 요청 정보를 request변수에 종합
-    val request = Request.Builder()
-        .url(urlString)
-        .get()
-        .header("X-Http-Token", ContextUtil.getLoginUserToken(context))
-        .build()
-
-    //        완성된 요청 정보를 실제로 호출 => 응답 처리
-    client.newCall(request)
-        .enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                //                        서버 연결 자체에 실패한경우
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-                //                        연결은 성공해서, 서버가 응답을 내려줬을때 실행
-                //                        실제 서버가 내려준 응답 내용을 변수로 저장
-                val bodyStr = response.body?.string()
-
-                //                        응답 내용으로 Json 객체 생성
-                val json = JSONObject(bodyStr)
-
-                //                        최종적으로 가져온 내용을 로그로 출력
-                Log.d("서버 응답 내용", json.toString())
-
-                //                        handler 변수에 응답 처리 코드가 있으면 실행해주자
-                handler?.onResponse(json)
-            }
-
-        })
-}
-
 //        로그인API를 호출해주는 기능
 //        1. 화면에서 어떤 데이터를 받아와야 하는지? -> email, name
         fun postRequestLogin(context: Context, email: String, pw: String, handler: JsonResponseHandler?) {
