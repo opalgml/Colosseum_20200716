@@ -12,7 +12,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ReplyListActivity"></activity>
         <activity android:name=".ViewTopicDetailActivity" />
         <activity
             android:name=".SplashActivity"
