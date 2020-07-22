@@ -88,7 +88,6 @@ class ViewTopicDetailActivity : BaseActivity() {
         voteToFirstSideBtn.setOnClickListener(voteCode)
         voteToSecondSideBtn.setOnClickListener(voteCode)
 
-
     }
 
     override fun setValues() {
