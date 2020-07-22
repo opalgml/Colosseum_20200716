@@ -80,8 +80,8 @@ class ServerUtil {
         val urlBuilder = "${BASE_URL}/topic/${topicId}".toHttpUrlOrNull()!!.newBuilder()
 
     //        urlBuilder에 필요한 파라미터 첨부
-//        urlBuilder.addEncodedQueryParameter("device_token", "TEST기기토큰")
-//        urlBuilder.addEncodedQueryParameter("os", "Android")
+        urlBuilder.addEncodedQueryParameter("order_type", "NEW")
+        urlBuilder.addEncodedQueryParameter("page_num", "1")
 
     //        모든 데이터가 담겼으면 주소를 완성해서 String 으로 저장
         val urlString = urlBuilder.build().toString()
@@ -117,6 +117,7 @@ class ServerUtil {
 
             })
     }
+
 
 //        로그인API를 호출해주는 기능
 //        1. 화면에서 어떤 데이터를 받아와야 하는지? -> email, name
