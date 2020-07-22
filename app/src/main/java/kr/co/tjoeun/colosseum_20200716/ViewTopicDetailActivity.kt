@@ -41,7 +41,18 @@ class ViewTopicDetailActivity : BaseActivity() {
 //        의견 등록하기 버튼 클릭 시 등록 화면으로 이동
         postReplyBtn.setOnClickListener {
 
+//            투표를 아직 하지 않은 상태라면, 의견 작성 화면 팝업 호출하지 않음
+            if(mTopic.mySideId == -1)
+            {
+                Toast.makeText(mContext, "투표를 해야 의견을 작성할 수 있습니다.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
             val myIntent = Intent(mContext, EditReplyActivity::class.java)
+
+//            토론 제목, 진영 이름을 파라미터로 전달하기
+            myIntent.putExtra("topicTitle", mTopic.title)
+            myIntent.putExtra("selectedSideTitle", mTopic.mySide!!.id)
             startActivity(myIntent)
 
         }
