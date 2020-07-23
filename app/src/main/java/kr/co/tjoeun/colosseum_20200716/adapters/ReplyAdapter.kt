@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter
 import android.widget.TextView
 import kr.co.tjoeun.colosseum_20200716.R
 import kr.co.tjoeun.colosseum_20200716.datas.Reply
+import java.text.SimpleDateFormat
 
 class ReplyAdapter(val mContext: Context, resId : Int, val mList:List<Reply>) : ArrayAdapter<Reply>(mContext, resId, mList) {
 
@@ -36,6 +37,10 @@ class ReplyAdapter(val mContext: Context, resId : Int, val mList:List<Reply>) : 
         contentTxt.text = data.content
 
 //        시간정보 텍스트뷰 내용 설정
+
+//        날짜 출력 양식용 변수
+        val sdf = SimpleDateFormat("yy-MM-dd a h시 m분")
+        replyWriteTime.text = sdf.format(data.writtenDateTime.time)
 
         return row
     }
