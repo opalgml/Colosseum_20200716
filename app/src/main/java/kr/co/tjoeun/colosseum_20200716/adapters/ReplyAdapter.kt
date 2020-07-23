@@ -58,6 +58,11 @@ class ReplyAdapter(val mContext: Context, resId : Int, val mList:List<Reply>) : 
         replyBtn.setOnClickListener {
 
             val myIntent = Intent(mContext, ViewReplyDetailActivity::class.java)
+
+//            몇번 의견에 대한 상세를 보고 싶은지 id만 넘김
+//            해당 화면에서 다시 서버를 통해 데이터를 받아옴.
+            myIntent.putExtra("replyId", data.id)
+
 //            startActiviy 함수는 AppComatActivity 가 내려주는 기능.
 //            Adapter는 액티비티가 아니므로, startActivity 기능을 내려주지 않는다.
 //            mContext 변수가, 어떤 화면이 리스트뷰를 뿌리는지 들고 있음. => mContext.startActivity 를 이용하자!
