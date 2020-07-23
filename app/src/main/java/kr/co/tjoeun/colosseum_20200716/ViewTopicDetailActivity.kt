@@ -35,6 +35,13 @@ class ViewTopicDetailActivity : BaseActivity() {
         setValues()
     }
 
+    override fun onResume() {
+        super.onResume()
+
+//        서버에서 다시 토론 현황을 불러오자
+        getTopicDetailFromServer()
+    }
+
     override fun setupEvents() {
 
 //        의견 등록하기 누르면 작성 화면으로
@@ -123,7 +130,8 @@ class ViewTopicDetailActivity : BaseActivity() {
         }
 
 //        서버에서 토론 주제에 대한 상세 진행 상황 가져오기
-        getTopicDetailFromServer()
+//        중복으로 데이터 조회됨으로 onResume에서 토론 진행 현황을 조회하고, 해당 부분은 주석처리한다.
+//        getTopicDetailFromServer()
 
 //        어댑터 초기화 => 리스트뷰와 연결
         mReplyAdapter = ReplyAdapter(mContext, R.layout.reply_list_item, mReplyList)
@@ -135,6 +143,9 @@ class ViewTopicDetailActivity : BaseActivity() {
 
         ServerUtil.getRequestTopicDetail(mContext, mTopicId, object : ServerUtil.JsonResponseHandler {
             override fun onResponse(json: JSONObject) {
+
+//                의견 목록을 한번 비웠다가 다시 파싱
+                mReplyList.clear()
 
                 val data = json.getJSONObject("data")
 
