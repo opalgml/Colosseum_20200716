@@ -12,7 +12,6 @@ import kr.co.tjoeun.colosseum_20200716.adapters.ReplyAdapter
 import kr.co.tjoeun.colosseum_20200716.datas.Reply
 import kr.co.tjoeun.colosseum_20200716.datas.Topic
 import kr.co.tjoeun.colosseum_20200716.utils.ServerUtil
-import okhttp3.internal.notify
 import org.json.JSONObject
 
 class ViewTopicDetailActivity : BaseActivity() {
@@ -23,10 +22,10 @@ class ViewTopicDetailActivity : BaseActivity() {
     //    서버에서 받아오는 토론 정보를 저장할 멤버변수
     lateinit var mTopic : Topic
 
-//    토론 주제를 받아올때 딸려오는 의견 목록을 담아줄 배열
+    //    토론 주제를 받아올때 딸려오는 의견 목록을 담아줄 배열
     val mReplyList = ArrayList<Reply>()
 
-//    실제 목록을 뿌려줄 어댑터
+    //    실제 목록을 뿌려줄 어댑터
     lateinit var mReplyAdapter : ReplyAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,24 +37,26 @@ class ViewTopicDetailActivity : BaseActivity() {
 
     override fun setupEvents() {
 
-//        의견 등록하기 버튼 클릭 시 등록 화면으로 이동
+//        의견 등록하기 누르면 작성 화면으로
+
         postReplyBtn.setOnClickListener {
 
-//            투표를 아직 하지 않은 상태라면, 의견 작성 화면 팝업 호출하지 않음
-            if(mTopic.mySideId == -1)
-            {
-                Toast.makeText(mContext, "투표를 해야 의견을 작성할 수 있습니다.", Toast.LENGTH_SHORT).show()
+//            투표를 안한 상태라면, 작성 화면 진입 거부 (투표부터 시키자)
+
+            if (mTopic.mySideId == -1) {
+
+                Toast.makeText(mContext, "투표를 해야만 의견을 작성할 수 있습니다.", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
+
             }
 
+
             val myIntent = Intent(mContext, EditReplyActivity::class.java)
-
-//            토론 제목, 진영 이름을 파라미터로 전달하기
             myIntent.putExtra("topicTitle", mTopic.title)
-            myIntent.putExtra("selectedSideTitle", mTopic.mySide!!.id)
+            myIntent.putExtra("selectedSideTitle", mTopic.mySide!!.title)
             startActivity(myIntent)
-
         }
+
 
 //        버튼이 눌리면 할 일을 변수에 담아서 저장.
 //        TedPermission에서 권한별 할 일을 변수에 담아서 저장한것과 같은 논리
@@ -89,7 +90,6 @@ class ViewTopicDetailActivity : BaseActivity() {
 
                     mTopic = Topic.getTopicFromJson(topic)
 
-
 //                    화면에 mTopic의 데이터를 이용해서 반영
 
                     runOnUiThread {
@@ -108,6 +108,7 @@ class ViewTopicDetailActivity : BaseActivity() {
         voteToFirstSideBtn.setOnClickListener(voteCode)
         voteToSecondSideBtn.setOnClickListener(voteCode)
 
+
     }
 
     override fun setValues() {
@@ -123,7 +124,7 @@ class ViewTopicDetailActivity : BaseActivity() {
 //        서버에서 토론 주제에 대한 상세 진행 상황 가져오기
         getTopicDetailFromServer()
 
-//        어뎁터 초기화 => 리스트뷰와 연결
+//        어댑터 초기화 => 리스트뷰와 연결
         mReplyAdapter = ReplyAdapter(mContext, R.layout.reply_list_item, mReplyList)
         replyListView.adapter = mReplyAdapter
 
@@ -143,12 +144,13 @@ class ViewTopicDetailActivity : BaseActivity() {
 
                 mTopic = Topic.getTopicFromJson(topicObj)
 
-//                    같이 불려오는 의견 목록을 파싱해서 담자
+//                같이 불러오는 의견 목록을 파싱해서 배열에 담자
+
                 val replies = topicObj.getJSONArray("replies")
 
-//                JSonArray를 하나씩 돌면서 Reply 형태로 바꾸어 목록에 추가
-                for(i in 0 until replies.length())
-                {
+//                JSONArray를 하나씩 돌면서 Reply 형태로 바꿔서 목록에 추가
+
+                for (i in 0 until replies.length()) {
                     mReplyList.add(Reply.getReplyFromJson(replies.getJSONObject(i)))
                 }
 
@@ -158,7 +160,7 @@ class ViewTopicDetailActivity : BaseActivity() {
 
                     setTopicDataToUi()
 
-//                    댓글 목록을 불러왔다고 리스트뷰에 알림을 줌
+//                    댓글 목록을 불러왔다고 리스트뷰 어댑터에게 알림
                     mReplyAdapter.notifyDataSetChanged()
 
                 }
