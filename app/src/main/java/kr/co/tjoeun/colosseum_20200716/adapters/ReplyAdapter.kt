@@ -2,16 +2,21 @@ package kr.co.tjoeun.colosseum_20200716.adapters
 
 import android.content.Context
 import android.content.Intent
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import kr.co.tjoeun.colosseum_20200716.R
 import kr.co.tjoeun.colosseum_20200716.ViewReplyDetailActivity
 import kr.co.tjoeun.colosseum_20200716.datas.Reply
+import kr.co.tjoeun.colosseum_20200716.utils.ServerUtil
 import kr.co.tjoeun.colosseum_20200716.utils.TimeUtil
+import org.json.JSONObject
 import java.text.SimpleDateFormat
 
 class ReplyAdapter(val mContext: Context, resId : Int, val mList:List<Reply>) : ArrayAdapter<Reply>(mContext, resId, mList) {
@@ -68,6 +73,76 @@ class ReplyAdapter(val mContext: Context, resId : Int, val mList:List<Reply>) : 
 //            mContext 변수가, 어떤 화면이 리스트뷰를 뿌리는지 들고 있음. => mContext.startActivity 를 이용하자!
             mContext.startActivity(myIntent)
 
+        }
+
+//        의견에 대한 좋아요 / 싫어요 버튼 클릭 이벤트
+        likeBtn.setOnClickListener {
+            ServerUtil.postRequestReplyLikeOrDislike(mContext, data.id, true, object : ServerUtil.JsonResponseHandler{
+                override fun onResponse(json: JSONObject) {
+
+//                    변경된 좋아요 / 싫어요 갯수를 파악해서 버튼 문구 반영
+//                    => 목록에 뿌려지는 data의 좋아요 / 싫어요 갯수를 변경
+
+                    val dataObj = json.getJSONObject("data")
+                    val replyObj = dataObj.getJSONObject("reply")
+
+                    val reply = Reply.getReplyFromJson(replyObj)
+                    data.likeCount = reply.likeCount
+                    data.dislikeCount = reply.dislikeCount
+
+//                    data 값 변경 => 리스트뷰 구성하는 목록 변경 => 어탭터.notifyDataSetChanged 실행
+//                    이 코드는 어댑터 내부 => notifyDataSetChanged 내장되어있음 => 호출해서 처리
+
+//                    새로고침도 UI 변경됨 => runOnUiThread 등으로 UI 쓰레드가 처리하도록 해아함
+//                    어댑터는 runOnUiThread 기능 내장 X
+//                    => Haneler 이용 -> UI 쓰레드에 접근
+                    val uiHandler = Handler(Looper.getMainLooper())
+                    uiHandler.post{ //지연시키는경우 postDelayed 사용
+                        notifyDataSetChanged()
+//                    서버가 알려주는 메시지를 Toast로 출력
+                        val message = json.getString("message")
+                        Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show()
+                    }
+
+
+                }
+
+            })
+        }
+
+        dislikeBtn.setOnClickListener {
+            ServerUtil.postRequestReplyLikeOrDislike(mContext, data.id, false, object : ServerUtil.JsonResponseHandler{
+                override fun onResponse(json: JSONObject) {
+
+//                    변경된 좋아요 / 싫어요 갯수를 파악해서 버튼 문구 반영
+//                    => 목록에 뿌려지는 data의 좋아요 / 싫어요 갯수를 변경
+
+                    val dataObj = json.getJSONObject("data")
+                    val replyObj = dataObj.getJSONObject("reply")
+
+                    val reply = Reply.getReplyFromJson(replyObj)
+                    data.likeCount = reply.likeCount
+                    data.dislikeCount = reply.dislikeCount
+
+//                    data 값 변경 => 리스트뷰 구성하는 목록 변경 => 어탭터.notifyDataSetChanged 실행
+//                    이 코드는 어댑터 내부 => notifyDataSetChanged 내장되어있음 => 호출해서 처리
+
+//                    새로고침도 UI 변경됨 => runOnUiThread 등으로 UI 쓰레드가 처리하도록 해아함
+//                    어댑터는 runOnUiThread 기능 내장 X
+//                    => Haneler 이용 -> UI 쓰레드에 접근
+                    val uiHandler = Handler(Looper.getMainLooper())
+                    uiHandler.post{ //지연시키는경우 postDelayed 사용
+                        notifyDataSetChanged()
+
+//                    서버가 알려주는 메시지를 Toast로 출력
+                        val message = json.getString("message")
+                        Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show()
+                    }
+
+
+                }
+
+            })
         }
 
         return row
