@@ -3,8 +3,11 @@ package kr.co.tjoeun.colosseum_20200716
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_view_reply_detail.*
 import kotlinx.android.synthetic.main.reply_list_item.*
+import kr.co.tjoeun.colosseum_20200716.adapters.ReReplyAdapter
+import kr.co.tjoeun.colosseum_20200716.adapters.TopicAdatper
 import kr.co.tjoeun.colosseum_20200716.datas.Reply
 import kr.co.tjoeun.colosseum_20200716.utils.ServerUtil
 import kr.co.tjoeun.colosseum_20200716.utils.TimeUtil
@@ -17,6 +20,10 @@ class ViewReplyDetailActivity : BaseActivity() {
 
 //    이 화면에서 보여줘야할 의견의 정보를 가진 변수 => 멤버변수
     lateinit var mReply : Reply
+
+//    의견에 달린 답글들을 저장할 목록
+    val mReReplyList = ArrayList<Reply>()
+    lateinit var mReReplyAdapter : ReReplyAdapter
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,7 +31,6 @@ class ViewReplyDetailActivity : BaseActivity() {
 
         setupEvents()
         setValues()
-        getReplyFromServer()
     }
 
     override fun setupEvents() {
@@ -39,6 +45,8 @@ class ViewReplyDetailActivity : BaseActivity() {
 //        받아온 replyId에 맞는 의견 정보를 다시 불러온다.
         getReplyFromServer()
 
+        mReReplyAdapter = ReReplyAdapter(mContext, R.layout.re_reply_list_item, mReReplyList)
+        reReplyListView.adapter = mReReplyAdapter
     }
 
     //서버에서 의견 정보 불러오기
@@ -50,11 +58,22 @@ class ViewReplyDetailActivity : BaseActivity() {
                 val data = json.getJSONObject("data")
                 val replyObject = data.getJSONObject("reply")
 
-                Log.d("flag1", "activity")
                 mReply = Reply.getReplyFromJson(replyObject)
+
+//                대댓글 정보
+                val replies = replyObject.getJSONArray("replies")
+                for(i in 0 until replies.length())
+                {
+//                    reReply 내부 정보를 추출
+                    val reReplyObj = replies.getJSONObject(i)
+                    val reReply = Reply.getReplyFromJson(reReplyObj)
+                    mReReplyList.add(reReply)
+                }
 
                 runOnUiThread {
                     setReplyData()
+//                    답글 목록이 불러지면 새로 반영
+                    mReReplyAdapter.notifyDataSetChanged()
                 }
             }
 

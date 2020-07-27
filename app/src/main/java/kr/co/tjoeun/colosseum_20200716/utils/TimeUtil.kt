@@ -18,43 +18,37 @@ class TimeUtil {
 
         private val dateFormat = SimpleDateFormat("yyyy년 M월 d일 a h시 m분")
 
-        fun getTimeAgoFromCalendar(dateTime : Calendar) : String
-        {
+        fun getTimeAgoFromCalendar(dateTime : Calendar) : String {
 
-//            현재 시간이 몇시인지 알아야함 => Calendar 새로 만들면 현재 시간
+//            현재 시간이 몇시인지 알아야함. => Calendar 새로 만들면 현재시간
             val now = Calendar.getInstance()
-            
-//            현재 시간에서 변수 파라미터 dateTime을 빼면 몇 ms 차이가 나는지 체크
-//            30분 차이 : 30 * 60 * 1000 => 1,800,000 만큼 차이가 난다고 계산
 
-            val msDiff = now.timeInMillis - dateTime.timeInMillis //차이가 ms만큼 계산
+//            현재시간 - 재료로들어오는 시간 => 몇 ms차이가 나는지?
+//            30분 차이 : 30 * 60 * 1000 => 1800000 ms 만큼 차이가 난다고 계산.
 
-//            msDiff 값에 따른 if 처리
-            if(msDiff < (10*1000))
-            {
+            val msDiff = now.timeInMillis - dateTime.timeInMillis
+
+//            이 값에 따라 다른 분기
+
+            if (msDiff < 10 * 1000) {
                 return "방금 전"
             }
-            else if(msDiff < (1*60*1000))
-            {
+            else if (msDiff < 1 * 60 * 1000) {
                 val second = msDiff / 1000
                 return "${second}초 전"
             }
-            else if(msDiff < (1*60*60*1000))
-            {
-                val min = msDiff / 1000 / 60
-                return "${min}분 전"
+            else if (msDiff < 1 * 60 * 60 * 1000) {
+                val minute = msDiff / 1000 / 60
+                return "${minute}분 전"
             }
-            else if(msDiff < (1*12*60*60*1000))
-            {
+            else if (msDiff < 12 * 60 * 60 * 1000) {
                 val hour = msDiff / 1000 / 60 / 60
                 return "${hour}시간 전"
             }
-            else
-            {
-                return msDiff.toString()
+            else {
+                return dateFormat.format(dateTime.time)
             }
 
-            return ""
         }
 
     }
