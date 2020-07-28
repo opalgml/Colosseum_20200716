@@ -66,7 +66,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:focusable="false"
-                android:text="답글 ~" />
+                android:text="답글 ~"
+                android:background="@drawable/gray_border_box"/>
 
             <TextView
                 android:layout_width="0dp"
