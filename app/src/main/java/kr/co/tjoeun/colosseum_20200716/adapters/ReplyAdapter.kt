@@ -58,6 +58,25 @@ class ReplyAdapter(val mContext: Context, resId : Int, val mList:List<Reply>) : 
         likeBtn.text = "좋아요 ${data.likeCount.toString()}"
         dislikeBtn.text = "싫어요 ${data.dislikeCount.toString()}"
         replyBtn.text = "답글 ${data.replyCount.toString()}"
+
+//        좋아요/싫어요 눌렀을 때 화면 버튼 backGround 변경
+        if(data.myLike)
+        {
+            likeBtn.setBackgroundResource(R.drawable.red_border_box)
+        }
+        else
+        {
+            likeBtn.setBackgroundResource(R.drawable.gray_border_box)
+        }
+
+        if(data.myDisLike)
+        {
+            dislikeBtn.setBackgroundResource(R.drawable.blue_border_box)
+        }
+        else
+        {
+            dislikeBtn.setBackgroundResource(R.drawable.gray_border_box)
+        }
         
 //        답글 버튼이 눌리면 => 의견 상세 화면으로 진입
         replyBtn.setOnClickListener {
@@ -89,6 +108,10 @@ class ReplyAdapter(val mContext: Context, resId : Int, val mList:List<Reply>) : 
                     val reply = Reply.getReplyFromJson(replyObj)
                     data.likeCount = reply.likeCount
                     data.dislikeCount = reply.dislikeCount
+
+//                    버튼 backGround 반영
+                    data.myLike = reply.myLike
+                    data.myDisLike = reply.myDisLike
 
 //                    data 값 변경 => 리스트뷰 구성하는 목록 변경 => 어탭터.notifyDataSetChanged 실행
 //                    이 코드는 어댑터 내부 => notifyDataSetChanged 내장되어있음 => 호출해서 처리
@@ -123,6 +146,10 @@ class ReplyAdapter(val mContext: Context, resId : Int, val mList:List<Reply>) : 
                     val reply = Reply.getReplyFromJson(replyObj)
                     data.likeCount = reply.likeCount
                     data.dislikeCount = reply.dislikeCount
+
+//                    버튼 backGround 반영
+                    data.myLike = reply.myLike
+                    data.myDisLike = reply.myDisLike
 
 //                    data 값 변경 => 리스트뷰 구성하는 목록 변경 => 어탭터.notifyDataSetChanged 실행
 //                    이 코드는 어댑터 내부 => notifyDataSetChanged 내장되어있음 => 호출해서 처리
