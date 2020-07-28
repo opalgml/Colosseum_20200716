@@ -62,19 +62,23 @@ class ReplyAdapter(val mContext: Context, resId : Int, val mList:List<Reply>) : 
 //        좋아요/싫어요 눌렀을 때 화면 버튼 backGround 변경
         if(data.myLike)
         {
+            likeBtn.setTextColor(mContext.resources.getColor(R.color.naverRed))
             likeBtn.setBackgroundResource(R.drawable.red_border_box)
         }
         else
         {
+            likeBtn.setTextColor(mContext.resources.getColor(R.color.textGray)) // 리스트뷰의 재사용성때문에 -> else 에도 조건을 지정해서 초기화해준다.
             likeBtn.setBackgroundResource(R.drawable.gray_border_box)
         }
 
         if(data.myDisLike)
         {
+            dislikeBtn.setTextColor(mContext.resources.getColor(R.color.naverBlue))
             dislikeBtn.setBackgroundResource(R.drawable.blue_border_box)
         }
         else
         {
+            dislikeBtn.setTextColor(mContext.resources.getColor(R.color.textGray))
             dislikeBtn.setBackgroundResource(R.drawable.gray_border_box)
         }
         
