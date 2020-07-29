@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import kotlinx.android.synthetic.main.activity_main.*
 import kr.co.tjoeun.colosseum_20200716.adapters.TopicAdatper
 import kr.co.tjoeun.colosseum_20200716.datas.Topic
@@ -47,6 +48,9 @@ class MainActivity : BaseActivity() {
 
         mTopicAdapter = TopicAdatper(mContext, R.layout.topic_list_item, mTopicList)
         topicListView.adapter = mTopicAdapter
+
+//        BaseActivity가 물려주는 알림 버튼을 화면에 보이도록 함
+        notificationBtn.visibility = View.VISIBLE
 
     }
 
