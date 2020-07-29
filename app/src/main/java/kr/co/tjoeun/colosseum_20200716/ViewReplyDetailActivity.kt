@@ -2,12 +2,17 @@ package kr.co.tjoeun.colosseum_20200716
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
+import android.widget.Button
+import android.widget.EditText
+import android.widget.Toast
+import kotlinx.android.synthetic.main.activity_edit_reply.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_view_reply_detail.*
-import kotlinx.android.synthetic.main.reply_list_item.*
+import kotlinx.android.synthetic.main.re_reply_list_item.*
 import kr.co.tjoeun.colosseum_20200716.adapters.ReReplyAdapter
-import kr.co.tjoeun.colosseum_20200716.adapters.TopicAdatper
 import kr.co.tjoeun.colosseum_20200716.datas.Reply
 import kr.co.tjoeun.colosseum_20200716.utils.ServerUtil
 import kr.co.tjoeun.colosseum_20200716.utils.TimeUtil
@@ -34,7 +39,29 @@ class ViewReplyDetailActivity : BaseActivity() {
     }
 
     override fun setupEvents() {
+        //대댓글 달기 버튼 클릭
+        reReplyBtn.setOnClickListener {
 
+            val inputContent = reReplyEdt.text.toString()
+            if(inputContent.length < 5) {
+                Toast.makeText(mContext, "최소 5글자 이상은 입력해주세요.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            ServerUtil.postRequestReReply(mContext, mReplyId, inputContent, object: ServerUtil.JsonResponseHandler{
+                override fun onResponse(json: JSONObject) {
+
+                    runOnUiThread {
+                        val message = json.getString("message")
+                        Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show()
+
+//                        입력한 내용을 다시 빈칸으로 돌려주자.
+                        contentEdt.setText("")
+                    }
+                }
+
+            })
+        }
     }
 
     override fun setValues() {
@@ -60,6 +87,8 @@ class ViewReplyDetailActivity : BaseActivity() {
 
                 mReply = Reply.getReplyFromJson(replyObject)
 
+//                답글 목록은 누적되면 안됨 => 다 비워주고 다시 파싱
+
 //                대댓글 정보
                 val replies = replyObject.getJSONArray("replies")
                 for(i in 0 until replies.length())
@@ -74,6 +103,8 @@ class ViewReplyDetailActivity : BaseActivity() {
                     setReplyData()
 //                    답글 목록이 불러지면 새로 반영
                     mReReplyAdapter.notifyDataSetChanged()
+
+                    reReplyListView.smoothScrollToPosition(mReReplyList.size-1)
                 }
             }
 
