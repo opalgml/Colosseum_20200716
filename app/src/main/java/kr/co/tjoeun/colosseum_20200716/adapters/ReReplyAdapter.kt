@@ -42,6 +42,29 @@ class ReReplyAdapter(val mContext: Context, resId : Int, val mList:List<Reply>):
         likeBtn.text = "좋아요 ${data.likeCount}"
         disLikeBtn.text = "싫어요 ${data.dislikeCount}"
 
+//        좋아요 / 싫어요 여부에 따른 색 설정
+        if(data.myLike)
+        {
+            likeBtn.setBackgroundResource(R.drawable.red_border_box)
+            likeBtn.setTextColor(mContext.resources.getColor(R.color.naverRed))
+        }
+        else
+        {
+            likeBtn.setBackgroundResource(R.drawable.gray_border_box)
+            likeBtn.setTextColor(mContext.resources.getColor(R.color.textGray))
+        }
+
+        if(data.myDisLike)
+        {
+            disLikeBtn.setBackgroundResource(R.drawable.blue_border_box)
+            disLikeBtn.setTextColor(mContext.resources.getColor(R.color.naverBlue))
+        }
+        else
+        {
+            disLikeBtn.setBackgroundResource(R.drawable.gray_border_box)
+            disLikeBtn.setTextColor(mContext.resources.getColor(R.color.textGray))
+        }
+
 //        좋아요 / 싫어요 모두 실행하는 코드는 동일함
 //        서버에 true/false 어떤 값을 보내는지만 다름
 //        두개의 버튼이 눌리면 할 일(object : ??)을 변수에 담아두고 버튼에게 붙여만 주자
