@@ -44,6 +44,13 @@ class MainActivity : BaseActivity() {
 
     override fun setValues() {
 
+//        알림 버튼을 누르면 => 알림 목록 화면으로 이동
+        notificationBtn.setOnClickListener {
+//            이미지뷰도 => setOnClickListener 적용 가능
+            val myIntent = Intent(mContext, NotificationListActivity::class.java)
+            startActivity(myIntent)
+        }
+
         getTopicListFromServer()
 
         mTopicAdapter = TopicAdatper(mContext, R.layout.topic_list_item, mTopicList)

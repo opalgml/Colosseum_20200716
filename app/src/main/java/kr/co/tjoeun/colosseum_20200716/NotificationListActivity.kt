@@ -2,8 +2,19 @@ package kr.co.tjoeun.colosseum_20200716
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import kotlinx.android.synthetic.main.activity_notification_list.*
+import kotlinx.android.synthetic.main.activity_view_reply_detail.*
+import kr.co.tjoeun.colosseum_20200716.adapters.NotificationAdapter
+import kr.co.tjoeun.colosseum_20200716.adapters.ReReplyAdapter
+import kr.co.tjoeun.colosseum_20200716.datas.Notification
+import kr.co.tjoeun.colosseum_20200716.utils.ServerUtil
+import org.json.JSONObject
 
 class NotificationListActivity : BaseActivity() {
+
+    val mNotifiList = ArrayList<Notification>()
+    lateinit var mNotificationAdapter : NotificationAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_notification_list)
@@ -13,10 +24,34 @@ class NotificationListActivity : BaseActivity() {
     }
 
     override fun setupEvents() {
-
+        getRequestNotification()
     }
 
     override fun setValues() {
 
+        mNotificationAdapter = NotificationAdapter(mContext, R.layout.notification_list_item, mNotifiList)
+        notifyListView.adapter = mNotificationAdapter
+
+    }
+
+    fun getRequestNotification(){
+        ServerUtil.getRequestNotification(mContext, object: ServerUtil.JsonResponseHandler{
+            override fun onResponse(json: JSONObject) {
+
+                val dataObj = json.getJSONObject("data")
+                val notifications = dataObj.getJSONArray("notifications")
+                for (i in 0 until notifications.length())
+                {
+//                    JsonArray내부 object 추출 => 가공 => mNotiList에 담음
+                    mNotifiList.add(Notification.getNotificationFromJson(notifications.getJSONObject(i)))
+                }
+
+                runOnUiThread{
+
+                }
+
+            }
+
+        })
     }
 }
