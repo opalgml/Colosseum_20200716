@@ -61,6 +61,39 @@ class MainActivity : BaseActivity() {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+//        메인화면으로 돌아올때마다 서버에 읽지않은 알림이 몇개인지 요청
+        getNotiCountFromServer()
+    }
+
+//    안읽은 알림의 갯수만 가져오는 API 호출
+    fun getNotiCountFromServer(){
+        ServerUtil.getRequestCount(mContext, object:ServerUtil.JsonResponseHandler{
+            override fun onResponse(json: JSONObject) {
+                val data = json.getJSONObject("data")
+                val unreadNotiCount = data.getInt("unread_noty_count")
+
+//                안읽은 알림이 몇개인지에 따라 다른 UI 처리
+                runOnUiThread {
+                    if(unreadNotiCount == 0)
+                    {
+//                        빨간 동그라미 숨겨주기
+                        notiCountTxt.visibility = View.GONE
+                    }
+                    else
+                    {
+//                        빨간 동그라미 보여주기 + 알림 수 보여주기
+                        notiCountTxt.visibility = View.VISIBLE
+                        notiCountTxt.text = unreadNotiCount.toString()
+                    }
+                }
+            }
+
+        })
+    }
+
+
     fun getTopicListFromServer()
     {
 
