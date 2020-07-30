@@ -40,7 +40,7 @@ abstract class BaseActivity :AppCompatActivity() {
 
 //      액션바 뒤의 기본색 제거 -> 액션바를 가진 ToolBar의 좌우 여백을 0으로 설정
         val parentToolBar = myActionBar.customView.parent as Toolbar
-        parentToolBar.setContentInsetsAbsolute(0,0)
+        parentToolBar.setContentInsetsAbsolute(0, 0)
 //      액션바 xml에 있는 뷰들을 코틀린에서 사용할 수 있도록 연결
         notificationBtn = myActionBar.customView.findViewById(R.id.notificationBtn)
         notiCountTxt = myActionBar.customView.findViewById(R.id.notiCountTxt)

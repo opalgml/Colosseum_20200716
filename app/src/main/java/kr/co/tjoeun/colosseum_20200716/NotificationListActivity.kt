@@ -46,8 +46,12 @@ class NotificationListActivity : BaseActivity() {
                     mNotifiList.add(Notification.getNotificationFromJson(notifications.getJSONObject(i)))
                 }
 
-                runOnUiThread{
+//                알림이 하나라도 있으면 알림을 어디까지 읽었는지 서버에 전송 => 알림확인 기능
+//                handler에 null을 넣어, 할일이 없다고 명시
+                ServerUtil.postRequestNotificationCheck(mContext, mNotifiList[0].id, null)
 
+                runOnUiThread{
+                    mNotificationAdapter.notifyDataSetChanged()
                 }
 
             }
